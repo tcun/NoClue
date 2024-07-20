@@ -1,0 +1,113 @@
+[gd_scene load_steps=12 format=3 uid="uid://c7we2m54kk47t"]
+
+[ext_resource type="MeshLibrary" uid="uid://drcirtsbmwgi3" path="res://assets/World/tileset.tres" id="2_g0mgc"]
+[ext_resource type="PackedScene" uid="uid://cpfo00q3j184l" path="res://scenes/Portal.tscn" id="3_a8xeu"]
+[ext_resource type="Script" path="res://scripts/Portal.gd" id="3_jdx1u"]
+[ext_resource type="PackedScene" uid="uid://bixl2bghc80tt" path="res://scenes/Player.tscn" id="3_lk2tm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_epgko"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_q3tu2"]
+sky_material = SubResource("ProceduralSkyMaterial_epgko")
+
+[sub_resource type="Environment" id="Environment_klqxj"]
+background_mode = 2
+sky = SubResource("Sky_q3tu2")
+ambient_light_energy = 0.02
+tonemap_mode = 2
+glow_enabled = true
+fog_light_color = Color(1, 0.94902, 0.8, 1)
+fog_light_energy = 0.04
+fog_density = 0.1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6tebm"]
+size = Vector2(60, 60)
+center_offset = Vector3(0, -0.1, 0)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4s1xu"]
+data = PackedVector3Array(30, 0, 30, -30, 0, 30, 30, 0, -30, -30, 0, 30, -30, 0, -30, 30, 0, -30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ahkgv"]
+albedo_color = Color(0.742901, 0.491914, 0.168302, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5qsox"]
+albedo_color = Color(0.543668, 0.0388408, 0.560198, 1)
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_klqxj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_6tebm")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_4s1xu")
+
+[node name="GridMap" type="GridMap" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+mesh_library = ExtResource("2_g0mgc")
+cell_size = Vector3(1, 1, 1)
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(9, 3, 1, 9, 6, 1441793, 8, 7, 1441793, 8, 2, 1, 4, 2, 1048577, 4, 7, 655361, 3, 3, 1048577, 3, 6, 655361, 7, 7, 655360, 6, 7, 655360, 5, 7, 655360, 7, 2, 0, 6, 2, 0, 5, 2, 0, 2, 4, 0, 1, 4, 0, 0, 4, 0, 2, 5, 655360, 1, 5, 655360, 0, 5, 655360, 8, 3, 3, 9, 4, 3, 9, 5, 1441795, 8, 6, 1441795, 8, 5, 1441794, 8, 4, 1441794, 7, 4, 1441794, 7, 3, 1441794, 7, 5, 1441794, 7, 6, 1441794, 6, 6, 1441794, 6, 5, 1441794, 6, 4, 1441794, 6, 3, 1441794, 5, 3, 1441794, 5, 4, 1441794, 5, 5, 1441794, 5, 6, 1441794, 4, 5, 1441794, 4, 4, 1441794, 4, 6, 655363, 4, 3, 1048579, 3, 4, 1048579, 3, 5, 655363, 65534, 0, 655362, 65533, 1, 655362, 65532, 2, 655362, 65532, 3, 655362, 65531, 3, 655362, 65531, 4, 655362, 65531, 5, 655362, 65532, 5, 655362, 65532, 6, 655362, 65532, 7, 655362, 65532, 8, 655362, 65533, 8, 655362, 65533, 7, 655362, 65532, 4, 655362, 65533, 5, 655362, 65533, 6, 655362, 65533, 4, 655362, 65533, 3, 655362, 65531, 2, 655362, 65531, 1, 655362, 65531, 0, 655362, 65532, 0, 655362, 65532, 1, 655362, 65534, 1, 655362, 65534, 2, 655362, 65534, 3, 655362, 65534, 4, 655362, 65534, 5, 655362, 65534, 6, 655362, 65534, 7, 655362, 65534, 8, 655362, 65533, 2, 655362, 65533, 0, 655362, 65531, 8, 655362, 65531, 7, 655362, 65531, 6, 655362, 65530, 8, 655362, 65530, 7, 655362, 65530, 6, 655362, 65530, 5, 655362, 65530, 4, 655362, 65530, 3, 655362, 65530, 2, 655362, 65530, 1, 655362, 65530, 0, 655362, 65529, 0, 655362, 65529, 1, 655362, 65529, 2, 655362, 65529, 3, 655362, 65529, 4, 655362, 65529, 5, 655362, 65529, 6, 655362, 65529, 7, 655362, 65529, 8, 655362, 65528, 0, 655362, 65528, 1, 655362, 65528, 2, 655362, 65528, 3, 655362, 65528, 4, 655362, 65528, 5, 655362, 65528, 6, 655362, 65528, 7, 655362, 65528, 8, 655362, 65527, 8, 655362, 65527, 7, 655362, 65527, 6, 655362, 65527, 5, 655362, 65527, 4, 655362, 65527, 3, 655362, 65527, 2, 655362, 65527, 1, 655362, 65527, 0, 655362, 65527, 65535, 655362, 65528, 65535, 655362, 65529, 65535, 655362, 65530, 65535, 655362, 65532, 65535, 655362, 65533, 65535, 655362, 65534, 65535, 655362, 65531, 65535, 655362, 65534, 9, 655362, 65533, 9, 655362, 65532, 9, 655362, 65531, 9, 655362, 65530, 9, 655362, 65529, 9, 655362, 65528, 9, 655362, 65527, 9, 655362, 65526, 9, 655362, 65526, 8, 655362, 65526, 7, 655362, 65526, 6, 655362, 65526, 5, 655362, 65526, 4, 655362, 65526, 3, 655362, 65526, 2, 655362, 65526, 1, 655362, 65526, 0, 655362, 65526, 65535, 655362, 65525, 65535, 1048576, 65525, 0, 1048576, 65525, 1, 1048576, 65525, 2, 1048576, 65525, 3, 1048576, 65525, 4, 1048576, 65525, 5, 1048576, 65525, 6, 1048576, 65525, 7, 1048576, 65525, 8, 1048576, 65525, 9, 1048576, 65526, 65534, 0, 65527, 65534, 0, 65528, 65534, 0, 65531, 65534, 0, 65532, 65534, 0, 65533, 65534, 0, 65534, 65534, 0, 65535, 65535, 1441792, 65535, 0, 1441792, 65535, 1, 1441792, 65535, 2, 1441792, 65535, 3, 1441792, 65535, 6, 1441792, 65535, 7, 1441792, 65535, 8, 1441792, 65535, 9, 1441792, 65534, 10, 655360, 65533, 10, 655360, 65532, 10, 655360, 65531, 10, 655360, 65528, 10, 655360, 65527, 10, 655360, 65526, 10, 655360, 65525, 10, 655361, 65535, 10, 1441793, 65535, 65534, 1, 65525, 65534, 1048577, 65535, 4, 3, 65535, 5, 1441795, 65529, 65534, 1048579, 65530, 65534, 3, 65529, 65533, 1048576, 65530, 65533, 1441792, 65529, 65532, 1048576, 65530, 65532, 1441792, 10, 4, 0, 10, 5, 655360, 11, 5, 655360, 11, 4, 0, 65530, 10, 1441795, 65529, 10, 655363, 65530, 11, 1441792, 65529, 11, 1048576)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Portal 1" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 2, 0, 0, 0, 2, -9.112, 2, -4.714)
+
+[node name="Portal" parent="Portal 1" node_paths=PackedStringArray("other_portal") instance=ExtResource("3_a8xeu")]
+script = ExtResource("3_jdx1u")
+other_portal = NodePath("../../Portal 2/Portal")
+cull_layer = 4
+make_mesh_duplicates = true
+portal_area_z_margin = 1.0
+portal_area_x_margin = 0.1
+portal_area_y_margin = 0.1
+size = Vector2(1, 2)
+use_body_camera_as_teleport_origin = true
+enable_camera_near_plane_fix = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Portal 1"]
+visible = false
+size = Vector3(1.11072, 2.05621, 0.419495)
+material = SubResource("StandardMaterial3D_ahkgv")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Portal 1/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.028717, 0)
+operation = 2
+size = Vector3(1, 1.83307, 1)
+
+[node name="Portal 2" type="Node3D" parent="."]
+transform = Transform3D(-1.31134e-07, 0, 2, 0, 2, 0, -3, 0, -8.74228e-08, 17.496, 2, 7.593)
+
+[node name="Portal" parent="Portal 2" node_paths=PackedStringArray("other_portal") instance=ExtResource("3_a8xeu")]
+script = ExtResource("3_jdx1u")
+other_portal = NodePath("../../Portal 1/Portal")
+cull_layer = 4
+make_mesh_duplicates = true
+portal_area_z_margin = 1.0
+portal_area_x_margin = 0.1
+portal_area_y_margin = 0.1
+size = Vector2(1, 2)
+use_body_camera_as_teleport_origin = true
+enable_camera_near_plane_fix = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Portal 2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000404835, 0.00302237, -0.00353177)
+visible = false
+size = Vector3(1.11072, 2.05621, 0.419495)
+material = SubResource("StandardMaterial3D_5qsox")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Portal 2/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.028717, 0)
+operation = 2
+size = Vector3(1, 1.83307, 1)
+
+[node name="Player" parent="." instance=ExtResource("3_lk2tm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 0)
