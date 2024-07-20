@@ -145,12 +145,15 @@ offset_bottom = 40.0
 
 [node name="Ip" type="LineEdit" parent="JoinSettings/VBoxContainer"]
 layout_mode = 2
+placeholder_text = "Ip"
 
 [node name="Port" type="LineEdit" parent="JoinSettings/VBoxContainer"]
 layout_mode = 2
+placeholder_text = "Port"
 
 [node name="JoinServerButton" type="Button" parent="JoinSettings/VBoxContainer"]
 layout_mode = 2
+text = "Join"
 
 [node name="ErrorMessage" type="Label" parent="JoinSettings/VBoxContainer"]
 layout_mode = 2

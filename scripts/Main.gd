@@ -1,7 +1,7 @@
 extends Control
 
 # Define the possible game states
-enum GameState { MAIN_MENU, LOBBY, GAME, PAUSE, HOST }
+enum GameState { MAIN_MENU, LOBBY, GAME, PAUSE, HOST, JOIN }
 var current_state = GameState.MAIN_MENU
 
 # Declare node references with onready to ensure they're assigned when the scene is ready
@@ -9,6 +9,7 @@ var current_state = GameState.MAIN_MENU
 @onready var lobby = $Lobby
 @onready var game_overlay = $GameOverlay
 @onready var host_settings = $HostSettings
+@onready var join_settings = $JoinSettings
 
 # Called when the node is added to the scene
 func _ready():
@@ -35,13 +36,16 @@ func enter_state(state):
 			lobby.visible = false
 			game_overlay.visible = false
 			host_settings.visible = false
-			load_game_scene()
+			Network.load_game_scene()
 		GameState.PAUSE:
 			game_overlay.visible = true
 			get_tree().paused = true
 		GameState.HOST:
 			lobby.visible = false
 			host_settings.visible = true
+		GameState.JOIN:
+			lobby.visible = false
+			join_settings.visible = true
 
 # Exit the current state and perform necessary cleanup
 func exit_state(state):
@@ -55,6 +59,10 @@ func exit_state(state):
 		GameState.PAUSE:
 			game_overlay.visible = false
 			get_tree().paused = false
+		GameState.HOST:
+			pass
+		GameState.JOIN:
+			pass
 
 # Load the game scene and add it to the current scene tree
 #func load_game_scene():
@@ -99,8 +107,13 @@ func go_to_lobby():
 func go_to_host():
 	change_state(GameState.HOST)
 
+func go_to_join():
+	change_state(GameState.JOIN)
+
 func start_game():
 	change_state(GameState.GAME)
 
 func pause_game():
 	change_state(GameState.PAUSE)
+	
+

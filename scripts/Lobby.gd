@@ -26,8 +26,6 @@ func _on_single_player_button_pressed():
 
 func _on_host_game_button_pressed():
 	get_parent().go_to_host();
-	pass
 
 func _on_join_game_button_pressed():
-	# Implement join game logic here
-	pass
+	get_parent().go_to_join();

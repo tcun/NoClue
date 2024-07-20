@@ -14,7 +14,7 @@ func _on_join_server_button_pressed():
 		if port > 0 and port < 65536:
 			if Network.join_server(ip, port):
 				$VBoxContainer/ErrorMessage.text = ""
-				get_parent().start_game()
+				#get_parent().start_game()
 			else:
 				$VBoxContainer/ErrorMessage.text = "Failed to connect to server. Check console for details."
 		else:

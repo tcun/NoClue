@@ -6,18 +6,18 @@ var players = {}
 
 func start_server(port: int) -> bool:
 	server = ENetMultiplayerPeer.new()
-
+	
 	var error = server.create_server(port, 4) # Allow up to 4 players
 	if error != OK:
 		print("Error creating server: ", error)
 		return false
-
+	
 	multiplayer.multiplayer_peer = server
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-
+	
 	print("Server started on port ", port)
-	_load_game_scene()
+	load_game_scene()
 	return true
 
 func join_server(ip: String, port: int) -> bool:
@@ -30,8 +30,9 @@ func join_server(ip: String, port: int) -> bool:
 	multiplayer.multiplayer_peer = client
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	multiplayer.connection_succeeded.connect(_on_connection_succeeded)
+	multiplayer.connected_to_server.connect(_on_connection_succeeded)
 	multiplayer.connection_failed.connect(_on_connection_failed)
+	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 	print("Connecting to server...")
 	return true
@@ -39,7 +40,7 @@ func join_server(ip: String, port: int) -> bool:
 func _on_peer_connected(id: int):
 	print("Player connected with id: ", id)
 	rpc("broadcast_message", "Player " + str(id) + " has connected.")
-
+	
 	if is_multiplayer_authority():
 		var player = _instantiate_player(id)
 		players[id] = player
@@ -55,11 +56,14 @@ func _on_peer_disconnected(id: int):
 func _on_connection_succeeded():
 	print("Successfully connected to the server!")
 	rpc_id(1, "broadcast_message", "A new player has connected.") # Assuming server ID is 1
-	_load_game_scene()
+	load_game_scene()
 
 func _on_connection_failed():
 	print("Failed to connect to the server.")
-		
+
+func _on_server_disconnected():
+	print("Disconnected from server.")
+	
 @rpc
 func broadcast_message(message: String):
 	print(message)
@@ -98,6 +102,6 @@ func load_game_scene():
 func _instantiate_player(id: int):
 	var player_scene = preload("res://scenes/Player.tscn")
 	var player = player_scene.instantiate()
-	player.set_network_master(id)
+	player.set_multiplayer_authority(id)
 	get_tree().current_scene.add_child(player)
 	return player
